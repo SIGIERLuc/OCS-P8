@@ -72,14 +72,10 @@
 	 * Renders all active tasks
 	 */
 	Controller.prototype.showActive = function () {
-		
 		var self = this;
 		self.model.read({ completed: false }, function (data) {
-			console.log(data)
 			self.view.render('showEntries', data);
 		});
-		
-		
 	};
 
 	/**

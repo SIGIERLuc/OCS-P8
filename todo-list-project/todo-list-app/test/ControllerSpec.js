@@ -63,12 +63,12 @@ describe('controller', function () {
 		subject = new app.Controller(model, view);
 	});
 
-	it('should call the renderer on start-up', function () {
+	it('should call the render on start-up', function () {
 		// TODO: write test
 
 		subject.setView('');
 
-		expect(view.render).toHaveBeenCalledWith('setFilter', '');
+		expect(view.render).toHaveBeenCalled();
 	});
 
 	describe('routing', function () {
@@ -93,22 +93,24 @@ describe('controller', function () {
 
 		it('should show active entries', function () {
 			// TODO: write test
-			/* Pas de show entries car le resultat 
-			attendu n'est pas dépendant des todos */
+			setUpModel([{ title: 'my todo', completed: false }]);
 
 			subject.setView('/active');
 
-			expect(model.read).toHaveBeenCalledWith({ completed: false }, jasmine.any(Function));
+			expect(view.render).toHaveBeenCalledWith('updateElementCount', 1);
+			expect(model.read).toHaveBeenCalledWith({ completed: false }, jasmine.any(Function))
 
 		});
 
 		it('should show completed entries', function () {
 			// TODO: write test
+			setUpModel([{ title: 'my todo', completed: true }]);
 
 			subject.setView('/completed');
 
-			expect(model.read).toHaveBeenCalledWith({ completed: true }, jasmine.any(Function));
-
+			expect(view.render).toHaveBeenCalledWith('clearCompletedButton', { completed: 1, visible: true });
+			expect(view.render).toHaveBeenCalledWith('setFilter', 'completed');
+			expect(model.read).toHaveBeenCalledWith({ completed: true }, jasmine.any(Function))
 		});
 	});
 
@@ -167,7 +169,6 @@ describe('controller', function () {
 		subject.setView('/active');
 
 		expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
-		expect(qs('.filters .selected')).toHaveText("Active")
 	});
 
 	it('should highlight "Completed" filter when switching to completed view', function () {

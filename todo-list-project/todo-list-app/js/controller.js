@@ -160,7 +160,6 @@
 		var items;
 		
 		self.model.read(function(data) {
-			console.log(data);
 			items = data;
 		});
 
@@ -202,7 +201,6 @@
 	 */
 	Controller.prototype.toggleComplete = function (id, completed, silent) {
 		var self = this;
-		console.log(id, { completed: completed})
 		self.model.update(id, { completed: completed }, function () {
 			self.view.render('elementComplete', {
 				id: id,
@@ -222,7 +220,6 @@
 	Controller.prototype.toggleAll = function (completed) {
 		var self = this;
 		self.model.read({ completed: !completed }, function (data) {
-			console.log()
 			data.forEach(function (item) {
 				self.toggleComplete(item.id, completed, true);
 			});

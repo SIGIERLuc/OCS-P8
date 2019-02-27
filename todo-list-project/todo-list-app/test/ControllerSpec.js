@@ -93,24 +93,29 @@ describe('controller', function () {
 
 		it('should show active entries', function () {
 			// TODO: write test
-			setUpModel([{ title: 'my todo', completed: false }]);
+			var todo = { title: 'my todo', completed: false };
+			setUpModel([todo]);
 
 			subject.setView('/active');
 
 			expect(view.render).toHaveBeenCalledWith('updateElementCount', 1);
+			expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
 			expect(model.read).toHaveBeenCalledWith({ completed: false }, jasmine.any(Function))
+			expect(view.render).toHaveBeenCalledWith('showEntries', [todo])
 
 		});
 
 		it('should show completed entries', function () {
 			// TODO: write test
-			setUpModel([{ title: 'my todo', completed: true }]);
+			var todo = { title: 'my todo', completed: true };
+			setUpModel([todo]);
 
 			subject.setView('/completed');
 
 			expect(view.render).toHaveBeenCalledWith('clearCompletedButton', { completed: 1, visible: true });
 			expect(view.render).toHaveBeenCalledWith('setFilter', 'completed');
 			expect(model.read).toHaveBeenCalledWith({ completed: true }, jasmine.any(Function))
+			expect(view.render).toHaveBeenCalledWith('showEntries', [todo])
 		});
 	});
 
@@ -182,13 +187,15 @@ describe('controller', function () {
 		it('should toggle all todos to completed', function () {
 			// TODO: write test
 			var todo = { id: 42, title: 'my todo', completed: false };
-			setUpModel([todo]);
+			var todo1 = { id: 54, title: 'my todo', completed: false };
+			setUpModel([todo, todo1]);
 
 			subject.setView('');
 
 			view.trigger('toggleAll', { completed: true });
-			/* A voir avec vincent  */
+
 			expect(model.read).toHaveBeenCalledWith({ completed: false }, jasmine.any(Function));
+			expect(model.update.calls.count()).toEqual(2);
 
 		});
 
@@ -200,7 +207,12 @@ describe('controller', function () {
 			subject.setView('');
 
 			view.trigger('toggleAll', { completed: true });
-
+			
+			expect(view.render).toHaveBeenCalledWith('elementComplete',
+				{
+					id: 42,
+					completed: true
+				})
 			expect(model.update).toHaveBeenCalledWith(42, { completed: true }, jasmine.any(Function));
 		});
 	});
@@ -224,6 +236,7 @@ describe('controller', function () {
 
 			view.render.calls.reset();
 			model.read.calls.reset();
+
 			model.read.and.callFake(function (callback) {
 				callback([{
 					title: 'a new todo',

@@ -1,3 +1,12 @@
+RAJOUTER UN BOUTON POUR TOGGLE ALL
+
+
+
+it('should toggle all todos to completed', function () {
+    plusieur todo non completer vérifier que le toggleComplete model.update appeler deux fois avec les bon parametre
+    
+}
+
 STORE.js function save ligne 77 générer l'id seulement si besoin
 
 
@@ -8,4 +17,3 @@ Lister les projets sur le sit de manière plus lisible
 
 Rajouter un liens vers mon github 
 Linkedin
-

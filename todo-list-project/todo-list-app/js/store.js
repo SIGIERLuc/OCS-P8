@@ -82,7 +82,6 @@
 
 		// Generate an ID
 		var newId = "";
-		var charset = "0123456789";
 
 		newId += Date.now()
 

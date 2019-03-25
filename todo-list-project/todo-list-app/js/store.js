@@ -94,7 +94,7 @@
 			localStorage[this._dbName] = JSON.stringify(data);
 			callback.call(this, todos);
 		} else {
-
+			
 			// Generate an ID
 			updateData.id = Date.now();
 

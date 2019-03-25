@@ -80,11 +80,6 @@
 
 		callback = callback || function () { };
 
-		// Generate an ID
-		var newId = "";
-
-		newId += Date.now()
-
 		// If an ID was actually given, find the item and update each property
 		if (id) {
 			for (var i = 0; i < todos.length; i++) {
@@ -100,8 +95,8 @@
 			callback.call(this, todos);
 		} else {
 
-			// Assign an ID
-			updateData.id = parseInt(newId);
+			// Generate an ID
+			updateData.id = parseInt(Date.now());
 
 			todos.push(updateData);
 			localStorage[this._dbName] = JSON.stringify(data);

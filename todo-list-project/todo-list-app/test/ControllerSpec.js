@@ -65,10 +65,11 @@ describe('controller', function () {
 
 	it('should call the render on start-up', function () {
 		// TODO: write test
+		setUpModel([]);
 
 		subject.setView('');
 
-		expect(view.render).toHaveBeenCalled();
+		expect(view.render).toHaveBeenCalledWith('showEntries', []);
 	});
 
 	describe('routing', function () {
@@ -98,8 +99,6 @@ describe('controller', function () {
 
 			subject.setView('/active');
 
-			expect(view.render).toHaveBeenCalledWith('updateElementCount', 1);
-			expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
 			expect(model.read).toHaveBeenCalledWith({ completed: false }, jasmine.any(Function))
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo])
 
@@ -112,8 +111,6 @@ describe('controller', function () {
 
 			subject.setView('/completed');
 
-			expect(view.render).toHaveBeenCalledWith('clearCompletedButton', { completed: 1, visible: true });
-			expect(view.render).toHaveBeenCalledWith('setFilter', 'completed');
 			expect(model.read).toHaveBeenCalledWith({ completed: true }, jasmine.any(Function))
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo])
 		});
@@ -163,6 +160,8 @@ describe('controller', function () {
 
 	it('should highlight "All" filter by default', function () {
 		// TODO: write test
+		setUpModel([]);
+
 		subject.setView('');
 
 		expect(view.render).toHaveBeenCalledWith('setFilter', '');
@@ -171,6 +170,8 @@ describe('controller', function () {
 
 	it('should highlight "Active" filter when switching to active view', function () {
 		// TODO: write test
+		setUpModel([]);
+
 		subject.setView('/active');
 
 		expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
@@ -178,6 +179,8 @@ describe('controller', function () {
 
 	it('should highlight "Completed" filter when switching to completed view', function () {
 		// TODO: write test
+		setUpModel([]);
+
 		subject.setView('/completed');
 
 		expect(view.render).toHaveBeenCalledWith('setFilter', 'completed');
@@ -188,14 +191,17 @@ describe('controller', function () {
 			// TODO: write test
 			var todo = { id: 42, title: 'my todo', completed: false };
 			var todo1 = { id: 54, title: 'my todo', completed: false };
-			setUpModel([todo, todo1]);
+			var todo2 = { id: 685, title: 'my todo', completed: false };
+			setUpModel([todo, todo1, todo2]);
 
 			subject.setView('');
 
 			view.trigger('toggleAll', { completed: true });
 
-			expect(model.read).toHaveBeenCalledWith({ completed: false }, jasmine.any(Function));
-			expect(model.update.calls.count()).toEqual(2);
+
+			expect(model.update).toHaveBeenCalledWith(42, {completed: true}, jasmine.any(Function));
+			expect(model.update).toHaveBeenCalledWith(54, {completed: true}, jasmine.any(Function));
+			expect(model.update).toHaveBeenCalledWith(685, {completed: true}, jasmine.any(Function));
 
 		});
 

@@ -96,7 +96,7 @@
 		} else {
 			
 			// Generate an ID
-			updateData.id = Date.now();
+			updateData.id = parseInt(Date.now());
 
 			todos.push(updateData);
 			localStorage[this._dbName] = JSON.stringify(data);
@@ -111,16 +111,23 @@
 	 * @param {function} callback The callback to fire after saving
 	 */
 	Store.prototype.remove = function (id, callback) {
-		var todos = JSON.parse(localStorage.getItem(this._dbName));
+		var data = JSON.parse(localStorage[this._dbName]);
+		var todos = data.todos;
+		var todoId;
 
 		for (var i = 0; i < todos.length; i++) {
 			if (todos[i].id == id) {
-				todos.splice(i, 1);
-				break;
+				todoId = todos[i].id;
 			}
 		}
 
-		localStorage.setItem(this._dbName, JSON.stringify(todos));
+		for (var i = 0; i < todos.length; i++) {
+			if (todos[i].id == todoId) {
+				todos.splice(i, 1);
+			}
+		}
+
+		localStorage[this._dbName] = JSON.stringify(data);
 		callback.call(this, todos);
 	};
 
@@ -130,9 +137,9 @@
 	 * @param {function} callback The callback to fire after dropping the data
 	 */
 	Store.prototype.drop = function (callback) {
-		var todos =  [] ;
-		localStorage[this._dbName] = JSON.stringify(todos);
-		callback.call(this, todos);
+		var data = { todos: [] };
+		localStorage[this._dbName] = JSON.stringify(data);
+		callback.call(this, data.todos);
 	};
 
 	// Export to window

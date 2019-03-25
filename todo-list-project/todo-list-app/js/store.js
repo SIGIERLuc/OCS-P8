@@ -96,7 +96,7 @@
 		} else {
 			
 			// Generate an ID
-			updateData.id = parseInt(Date.now());
+			updateData.id = Date.now();
 
 			todos.push(updateData);
 			localStorage[this._dbName] = JSON.stringify(data);

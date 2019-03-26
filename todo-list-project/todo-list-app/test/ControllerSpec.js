@@ -230,9 +230,9 @@ describe('controller', function () {
 
 			subject.setView('');
 
-			view.trigger('newTodo', 'new todo');
+			view.trigger('newTodo', 'a new todo');
 
-			expect(model.create).toHaveBeenCalledWith('new todo', jasmine.any(Function))
+			expect(model.create).toHaveBeenCalledWith('a new todo', jasmine.any(Function))
 		});
 
 		it('should add a new todo to the view', function () {

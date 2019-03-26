@@ -94,7 +94,6 @@
 	 */
 	Controller.prototype.addItem = function (title) {
 		var self = this;
-
 		if (title.trim() === '') {
 			return;
 		}
